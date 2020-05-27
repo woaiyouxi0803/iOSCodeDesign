@@ -1,0 +1,46 @@
+# iOSCodeDesign
+
+### 1.CodeSnippets
+
+`open ~/Library/Developer/Xcode/UserData/CodeSnippets`
+
+将CodeSnippets文件夹下的文件放入到里面。
+
+QM的请参考https://github.com/QMUI/QMUI_iOS_CodeSnippets
+
+Example:
+
+`header_init`初始化头文件注释块（声明属性时顺序保持一致）
+`pragma init`初始化注释块
+
+`fnv_initView_initConstrations`展开 `-initView` 和 `-initConstrations`
+方法
+
+`sharedInstance`创建单例
+
+### 2. 代码规范
+[https://github.com/FantasticLBP/codesnippets](https://github.com/FantasticLBP/codesnippets)
+统一风格，暂时参考通用规范即可。
+
+> 特别：8.除了 .m 文件中方法，其他的地方"{"不需要另起一行。
+>
+> 修改：不另起一行，直接空格后加 "{"
+>
+> 例如：
+>
+> ```
+> - (void)getGooodsList {
+> 	//
+> }
+> ```
+
+
+
+### 3.图片
+
+下载到图片后，至少 需要主动压缩大小一次。
+
+https://tinypng.com/
+
+
+

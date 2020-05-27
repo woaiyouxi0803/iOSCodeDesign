@@ -11,6 +11,7 @@ QM的请参考https://github.com/QMUI/QMUI_iOS_CodeSnippets
 Example:
 
 `header_init`初始化头文件注释块（声明属性时顺序保持一致）
+
 `pragma init`初始化注释块
 
 `fnv_initView_initConstrations`展开 `-initView` 和 `-initConstrations`
@@ -18,7 +19,17 @@ Example:
 
 `sharedInstance`创建单例
 
-### 2. 代码规范
+### 2.Custom
+
+模版。拷贝入`/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Templates/File\ Templates/`
+只修改了`UIViewControllerObjective-C``UITableViewControllerObjective-C``UITableViewCellObjective-C`
+其余需要的自行修改。
+
+参考https://xiaovv.me/2018/03/16/Custom-xcode-templates/
+
+
+
+### 3. 代码规范
 [https://github.com/FantasticLBP/codesnippets](https://github.com/FantasticLBP/codesnippets)
 统一风格，暂时参考通用规范即可。
 
@@ -36,7 +47,7 @@ Example:
 
 
 
-### 3.图片
+### 4.图片
 
 下载到图片后，至少 需要主动压缩大小一次。
 

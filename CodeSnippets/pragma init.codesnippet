@@ -11,11 +11,12 @@
 	<key>IDECodeSnippetContents</key>
 	<string>#pragma mark - life cycle
 
-#ifdef DEBUG
 - (void)dealloc {
+    #ifdef DEBUG
     NSLog(@"%s",__func__);
+    #endif
 }
-#endif
+
 
 
 #pragma mark - public methods

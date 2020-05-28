@@ -53,5 +53,21 @@ Example:
 
 https://tinypng.com/
 
+命名规则:要求能从命名描述中知道其功能位置及作用。
 
+如按 "模块 _位置  _控件  _颜色 _功能作用 _状态_", 自由选取一些恰当的分类进行命名，
+
+home_top_white_ search
+
+login_button_login_normal
+
+login_button_login_enable
+
+common_button_back
+
+common_button_white_back
+
+discover_button_like_normal
+
+discover_button_like_select
 

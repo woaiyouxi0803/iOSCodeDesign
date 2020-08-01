@@ -71,3 +71,11 @@ discover_button_like_normal
 
 discover_button_like_select
 
+
+
+### 5.文件夹命名不要添加前缀
+
+
+
+
+

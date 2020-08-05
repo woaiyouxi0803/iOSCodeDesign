@@ -6,6 +6,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ___FILEBASENAMEASIDENTIFIER___ : ___VARIABLE_cocoaTouchSubclass___
 
++ (NSString *)getIdentifier;
+
 @end
 
 NS_ASSUME_NONNULL_END

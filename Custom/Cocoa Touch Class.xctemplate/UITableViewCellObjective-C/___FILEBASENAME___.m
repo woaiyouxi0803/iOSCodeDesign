@@ -29,6 +29,10 @@
 
 
 #pragma mark - public methods
++ (NSString *)getIdentifier {
+    return @"___FILEBASENAME___";
+}
+
 
 
 #pragma mark - event response

@@ -22,7 +22,7 @@ Example:
 ### 2.Custom
 
 模版。拷贝入`/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/Xcode/Templates/File\ Templates/`
-只修改了`UIViewControllerObjective-C``UITableViewControllerObjective-C``UITableViewCellObjective-C`
+只修改了`UIViewControllerObjective-C``UITableViewControllerObjective-C``UITableViewCellObjective-C`	`NIMSessionMessageContentViewObjective-C`
 其余需要的自行修改。
 
 参考https://xiaovv.me/2018/03/16/Custom-xcode-templates/
@@ -49,7 +49,7 @@ Example:
 
 ### 4.图片
 
-下载到图片后，至少 需要主动压缩大小一次。
+下载到图片后，至少 需要主动压缩大小一次。只取@3x。
 
 https://tinypng.com/
 
@@ -74,8 +74,18 @@ discover_button_like_select
 
 
 ### 5.文件夹命名不要添加前缀
+文件夹名/文件名
+如：```HomeButton/AWHomeButton.h
+HomeButton/AWHomeButton.m```
 
 
 
+### 6.Archive包时
+在Edite Scheme中修改Debug和Release及Name，每次都需要注意
 
 
+### 7.分支
+每次新建主分开发支为 "Branch/version",如“Develop/1.0.0”。
+自己开发的分支做好一部分功能后要及时合并回主开发分支。
+冲突时要通知成员。
+提交时注明修改的内容 

@@ -57,9 +57,12 @@
 				<string>UICollectionViewController</string>
 				<string>UICollectionViewCell</string>
 				<string>UICollectionReusableView</string>
+				<string>NIMSessionMessageContentView</string>
 			</array>
 			<key>Suffixes</key>
 			<dict>
+				<key>NIMSessionMessageContentView</key>
+				<string>SessionMessageContentView</string>
 				<key>UIViewController</key>
 				<string>ViewController</string>
 				<key>UITableViewController</key>
@@ -93,6 +96,7 @@
 					<string>UICollectionViewController</string>
 					<string>UICollectionViewCell</string>
 					<string>UICollectionReusableView</string>
+					<string>NIMSessionMessageContentView</string>
 				</array>
 			</dict>
 			<key>Default</key>

@@ -1,0 +1,199 @@
+爱玩、么么中的单聊添加自定义消息
+注： 单聊添加自定义消息, 新消息尽量用first、second判断类型,不要用【xx class】
+
+
+View
+新建子类继承 NIMSessionMessageContentView，是自定义消息气泡里的view。
+eg： AWRedGoldContent : NIMSessionMessageContentView
+
+/// 点击响应
+- (void)onTouchUpInside:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(onCatchEvent:)]) {
+        NIMKitEvent *event = [[NIMKitEvent alloc] init];
+        event.eventName = AWRedGoldContentClick;
+        event.messageModel = self.model;
+        event.data = self;
+        [self.delegate onCatchEvent:event];
+    }
+}
+
+/// 设置展示数据
+- (void)refresh:(NIMMessageModel *)data{
+    [super refresh:data];
+
+    NIMCustomObject *object = (NIMCustomObject *)data.message.messageObject;
+    Attachment *attachment = (Attachment *)object.attachment;
+」
+
+===================================================
+点击处理
+AWSessionViewController 中
+#pragma mark - NIMMessageCellDelegate
+- (BOOL)onTapCell:(NIMKitEvent *)event cell:(UITableViewCell *)cell{
+    BOOL handled = [super onTapCell:event cell:cell];
+    NSString *eventName = event.eventName;
+
+if([eventName isEqualToString:@"AWRedGoldContentClick”]){
+ NIMMessage *message = event.messageModel.message;
+        [self showCustom:message];
+}
+
+
+if(att.first == Custom_Noti_Header_RedGold) {
+
+        [self roomRedGoldClickWithMessageAWRedGoldAttachment:att];
+    }
+分类中处理roomRedGoldClickWithMessageAWRedGoldAttachment
+
+新建AWSessionViewController+AWRedGold
+展示弹窗ui
+
+===================================================
+
+
+新建子类继承 Attachment， 作用是方便获取气泡大小size和之前的view名称,
+
+Eg:AWRedGoldAttachment ： Attachment 
+
+Size 大概。 CGSizeMake(210-26, 72-20);
+期望大小， 注意-26，-20 （实践得出,可能与ContentView有关）
+
+===================================================
+AWSessionCustomContentConfig中设置气泡大小和对应view的名称
+
+/// view大小
+- (CGSize)contentSize:(CGFloat)cellWidth message:(NIMMessage *)message
+{
+    NIMCustomObject *object = (NIMCustomObject *)message.messageObject;
+    NSAssert([object isKindOfClass:[NIMCustomObject class]], @"message must be custom");
+    
+    Attachment *att = (Attachment *)object.attachment;
+    NSAssert([att isKindOfClass:[Attachment class]], @"attachment unexpected");
+
+
+ if (att.first == Custom_Noti_Header_RedGold) {        
+        return [AWRedGoldAttachment contentSize:message cellWidth:cellWidth];
+        
+    }
+
+}
+
+/// view名称
+- (NSString *)cellContent:(NIMMessage *)message
+{
+    NIMCustomObject *object = (NIMCustomObject *)message.messageObject;
+    NSAssert([object isKindOfClass:[NIMCustomObject class]], @"message must be custom");
+    
+    Attachment *att = (Attachment *)object.attachment;
+    NSAssert([att isKindOfClass:[Attachment class]], @"attachment unexpected");
+
+if (att.first == Custom_Noti_Header_RedGold) {
+        
+        return [AWRedGoldAttachment cellContent:message];
+        
+    }
+}
+===================================================
+AWCellLayoutConfig 添加是否能解析消息的
+
+
+- (instancetype)init
+{
+    if (self = [super init])
+    {
+        _types =  @[@“AWRedGoldAttachment”];
+}
+}
+
+- (BOOL)isSupportedCustomMessage:(NIMMessage *)message {
+  if (att.first == Custom_Noti_Header_RedGold) {
+        return YES;
+    }
+}
+
+
+
+
+===================================================
+AWCustomAttachmentDecoder 添加自定义消息解析（方便用Attachment子类判断。推荐用first、second判断类型,不要用【xx class】）
+
+- (id<NIMCustomAttachment>)decodeAttachment:(NSString *)content {
+    id<NIMCustomAttachment> attachment = nil;
+    NSData *data = [content dataUsingEncoding:NSUTF8StringEncoding];
+    if (data) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data
+                                                             options:0
+                                                               error:nil];
+        
+        if ([dict isKindOfClass:[NSDictionary class]]){
+            
+            NSInteger first = [dict[@"first"] integerValue];
+            NSInteger second = [dict[@"second"] integerValue];
+//            NSLog(@"我是first|||||%ld 我是second||||| %ld",(long)first,(long)second);
+            NSDictionary *data = dict[@"data"];
+
+if (first == Custom_Noti_Header_RedGold){
+                    /// 收到金币红包
+                    AWRedGoldAttachment *redGoldAttachment = [[AWRedGoldAttachment alloc] init];
+                    redGoldAttachment.first = (short)first;
+                    redGoldAttachment.second = (short)second;
+                    redGoldAttachment.data = data;
+                    return redGoldAttachment;
+                }
+
+
+===================================================
+AWSessionListViewController 消息列表展示的文字 [xx]
+
+- (NSAttributedString *)contentForRecentSession:(NIMRecentSession *)recent{
+    NSAttributedString *content;
+    if (recent.lastMessage.messageType == NIMMessageTypeCustom){
+        
+        NIMCustomObject *obj = (NIMCustomObject *)recent.lastMessage.messageObject;
+        Attachment *att = (Attachment *)obj.attachment;
+	
+	if (att.first == Custom_Noti_Header_RedGold){
+            text = @"[金币红包]";
+        }
+
+
+===================================================
+
+
+发送自定义消息：
+
+/// 发送金币红包
+- (void)sendRedGold:(AWRedGoldModel *)goldModel {
+    
+    Attachment *attachement = [[Attachment alloc] init];
+    
+    attachement.first = Custom_Noti_Header_RedGold;
+    attachement.second = Custom_Noti_Header_Sub_RedGold_Revice;
+    
+    [HttpRequestHelper requestTransferStart:goldModel success:^(NSString * _Nonnull transferRecordId) {
+        
+        goldModel.transferRecordId = transferRecordId;
+        attachement.data = [goldModel model2dictionary];
+        [GetCore(ImMessageCore) sendCustomMessageAttachement:attachement sessionId:goldModel.targetUid type:NIMSessionTypeP2P needApns:YES apnsContent:[NSString stringWithFormat:@"%@给你送了1个金币红包",goldModel.nick]];
+      
+        NotifyCoreClient(AWRedGoldCoreClient, @selector(onSendRedSuccess), onSendRedSuccess);
+        
+    } failure:^(NSNumber * _Nonnull resCode, NSString * _Nonnull message) {
+        
+        NotifyCoreClient(AWRedGoldCoreClient, @selector(onSendRedFailure:message:), onSendRedFailure:resCode message:message);
+    }];
+}
+
+
+
+===================================================
+
+
+
+
+
+
+
+
+
+
